@@ -28,7 +28,7 @@ html {
     height: 100%;
     font-family: "San Francisco";
     /* base size for em calculation */
-    font-size: 30px;
+    font-size: 16px;
 }
 
 .header {
