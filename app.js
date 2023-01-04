@@ -18,3 +18,15 @@ const updateTime = () => {
 }
 setInterval(updateTime, 1000);
 updateTime();
+
+
+const displayPane = document.querySelector('.value');
+
+const btnHandle = document.querySelectorAll('.button');
+btnHandle.forEach(btn => btn.addEventListener('click', btnClick));
+
+function btnClick() {
+    // console.log(this.innerHTML);
+    // console.log(this.classList.value);
+    displayPane.innerHTML = this.textContent;
+}
