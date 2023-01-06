@@ -41,9 +41,7 @@ function operatorBtnClick() {
         array.push(value.textContent);
         array.push(this.textContent);
         continuousOperation = true;
-        // value.textContent = 0;
     } else if (array.length === 1) {
-        // value.textContent = 0;
         array[1] = this.textContent;
         continuousOperation = true;
     } else if (array.length === 2) {
@@ -75,9 +73,6 @@ function percentBtnModifier() {
 
 function resetCalculator() {
     value.textContent = 0;
-    firstNum = '';
-    secondNum = '';
-    currentOperand = '';
     array = [];
     continuousOperation = false;
 }
