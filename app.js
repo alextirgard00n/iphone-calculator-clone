@@ -13,6 +13,7 @@ const acBtn = document.querySelector('.ac');
 const pmBtn = document.querySelector('.pm');
 const equalBtn = document.querySelector('.equal');
 const percentBtn = document.querySelector('.percent');
+const pointBtn = document.querySelector('.decimal');
 
 numBtn.forEach(btn => btn.addEventListener('click', numBtnClick));
 operatorBtn.forEach(btn => btn.addEventListener('click', operatorBtnClick));
@@ -20,6 +21,7 @@ acBtn.addEventListener('click', resetCalculator);
 pmBtn.addEventListener('click', plusMinusModifier);
 equalBtn.addEventListener('click', equalBtnClick);
 percentBtn.addEventListener('click', percentBtnModifier);
+pointBtn.addEventListener('click', appendPoint);
 
 function numBtnClick() {
     if (continuousOperation) {
@@ -76,6 +78,13 @@ function resetCalculator() {
     currentOperand = '';
     array = [];
     continuousOperation = false;
+}
+
+function appendPoint() {
+    if (value.textContent === '')
+        value.textContent = '0'
+    if (value.textContent.includes('.')) return
+    value.textContent += '.'
 }
 
 function operate(operator, a, b) {
