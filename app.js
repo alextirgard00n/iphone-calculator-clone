@@ -40,10 +40,12 @@ function operatorBtnClick() {
     if (array.length === 0) { //initial number
         array.push(value.textContent);
         array.push(this.textContent);
-        value.textContent = 0;
+        continuousOperation = true;
+        // value.textContent = 0;
     } else if (array.length === 1) {
         // value.textContent = 0;
         array[1] = this.textContent;
+        continuousOperation = true;
     } else if (array.length === 2) {
         equalBtnClick();
         value.textContent = array[0];
