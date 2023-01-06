@@ -108,7 +108,8 @@ img {
     cursor: pointer;
 }
 
-.button.operator {
+.operator,
+.equal {
     background: var(--button-operands);
 }
 

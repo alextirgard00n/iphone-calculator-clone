@@ -3,36 +3,9 @@ const minute = document.querySelector('.minute');
 const value = document.querySelector('.value');
 
 //global variables
-let currentDisplay = value.textContent;
-let firstNum = '';
-let secondNum = '';
-let currentOperand = '';
-let continuousOperation = false;
-
-// current signature year update
-let currYear = document.querySelector('.currYear');
-currYear.textContent = new Date().getFullYear();
-
-
-// Set up the time
-const updateTime = () => {
-    const currentTime = new Date();
-    let currentHour = currentTime.getHours();
-    const currentMinute = currentTime.getMinutes();
-    if (currentHour > 12) {
-        if (currentHour === 24) {
-            currentHour = 12;
-        } else {
-            currentHour -= 12;
-        }
-    }
-    hour.textContent = currentHour.toString();
-    minute.textContent = currentMinute.toString().padStart(2, '0');
-}
-setInterval(updateTime, 1000);
-updateTime();
-
-
+continuousOperation = false;
+operatorSelected = false;
+let array = [];
 
 const numBtn = document.querySelectorAll('.number');
 const operatorBtn = document.querySelectorAll('.operator');
@@ -45,14 +18,15 @@ numBtn.forEach(btn => btn.addEventListener('click', numBtnClick));
 operatorBtn.forEach(btn => btn.addEventListener('click', operatorBtnClick));
 acBtn.addEventListener('click', resetCalculator);
 pmBtn.addEventListener('click', plusMinusModifier);
-equalBtn.addEventListener('click', operateBtn);
+equalBtn.addEventListener('click', equalBtnClick);
 percentBtn.addEventListener('click', percentBtnModifier);
 
-
-// const btnHandle = document.querySelectorAll('.button');
-// btnHandle.forEach(btn => btn.addEventListener('click', btnClick));
-
 function numBtnClick() {
+    if (continuousOperation) {
+        value.textContent = this.textContent;
+        continuousOperation = false;
+        return;
+    }
     if (value.textContent === '0') {
         value.textContent = this.textContent;
     } else {
@@ -61,22 +35,30 @@ function numBtnClick() {
 }
 
 function operatorBtnClick() {
-    if (!firstNum) {
-        firstNum = value.innerHTML;
-        currentOperand = this.textContent;
+    if (array.length === 0) { //initial number
+        array.push(value.textContent);
+        array.push(this.textContent);
         value.textContent = 0;
+    } else if (array.length === 1) {
+        // value.textContent = 0;
+        array[1] = this.textContent;
+    } else if (array.length === 2) {
+        equalBtnClick();
+        value.textContent = array[0];
+        array.push(this.textContent);
+    }
+}
+
+
+function equalBtnClick() {
+    if (array.length !== 2) {
         return;
     }
-
-    // if (!secondNum && !currentOperand) {
-    //     value.textContent = 0;
-    // }
-    if (!secondNum) {
-        // currentOperand = this.textContent;
-        // value.textContent = 0;
-        secondNum = value.textContent;
-        // operateBtn();
-    }
+    array.push(value.textContent);
+    value.textContent = operate(array[1], array[0], array[2]);
+    array.splice(0, 2);
+    array[0] = value.textContent;
+    continuousOperation = true;
 }
 
 function plusMinusModifier() {
@@ -92,30 +74,8 @@ function resetCalculator() {
     firstNum = '';
     secondNum = '';
     currentOperand = '';
+    array = [];
     continuousOperation = false;
-}
-
-// function roundResult(number) {
-//     return Math.round(number * 1000) / 1000;
-// }
-
-// function btnClick() {
-//     // console.log(this.innerHTML);
-//     // console.log(this.classList.value);
-//     value.innerHTML = this.textContent;
-//     currentDisplay = value.textContent;
-// }
-
-function operateBtn() {
-    if (firstNum === '' && secondNum === '' && !currentOperand === '') {
-        return;
-    }
-    value.textContent = operate(currentOperand, firstNum, secondNum);
-    // firstNum = value.textContent;
-    firstNum = '';
-    secondNum = '';
-    currentOperand = '';
-    continuousOperation = true;
 }
 
 function operate(operator, a, b) {
@@ -139,18 +99,24 @@ function operate(operator, a, b) {
     }
 }
 
-// function add(a, b) {
-//     return a + b
-// }
+// current signature year update
+let currYear = document.querySelector('.currYear');
+currYear.textContent = new Date().getFullYear();
 
-// function substract(a, b) {
-//     return a - b
-// }
-
-// function multiply(a, b) {
-//     return a * b
-// }
-
-// function divide(a, b) {
-//     return a / b
-// }
+// Set up the time
+const updateTime = () => {
+    const currentTime = new Date();
+    let currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+    if (currentHour > 12) {
+        if (currentHour === 24) {
+            currentHour = 12;
+        } else {
+            currentHour -= 12;
+        }
+    }
+    hour.textContent = currentHour.toString();
+    minute.textContent = currentMinute.toString().padStart(2, '0');
+}
+setInterval(updateTime, 1000);
+updateTime();
